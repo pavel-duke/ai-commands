@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNKNOWN_TERMINAL</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    padding: 22px; background: radial-gradient(ellipse at center, #102016 0%, #050907 58%, #020403 100%);
+    color: #8dffae; font: 15px/1.55 Consolas, "Courier New", monospace;
+  }
+  .terminal {
+    width: min(760px, 100%); border: 1px solid #23663a; border-radius: 12px;
+    background: rgba(3, 10, 6, .94); box-shadow: 0 0 45px #00ff6630, inset 0 0 35px #00ff6609;
+    overflow: hidden;
+  }
+  .bar { display:flex; justify-content:space-between; gap:12px; padding:12px 16px; background:#0b1a10; border-bottom:1px solid #1b4d2c; color:#65c982; font-size:12px; letter-spacing:.08em; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#52f783; margin-right:7px; box-shadow:0 0 10px #52f783; }
+  main { padding: clamp(20px, 5vw, 38px); }
+  h1 { margin:0 0 4px; font-size:clamp(28px, 6vw, 46px); letter-spacing:.04em; text-shadow:0 0 18px #42ff8a66; }
+  .sub { color:#579b6b; margin:0 0 26px; font-size:13px; }
+  #log { min-height:220px; color:#9eeab2; white-space:pre-wrap; }
+  .line { margin:7px 0; }
+  .ok { color:#55ff8d; }
+  .dim { color:#4e805d; }
+  .progress-wrap { height:7px; background:#14271a; border:1px solid #285637; margin:22px 0 8px; overflow:hidden; border-radius:10px; }
+  #progress { height:100%; width:0; background:#50ff86; box-shadow:0 0 14px #50ff86; transition:width .25s; }
+  #percent { color:#69d989; font-size:12px; text-align:right; }
+  #final { display:none; margin-top:28px; padding:20px; border:1px solid #2e874b; border-radius:8px; background:#0a1c10; animation: appear .7s ease-out; }
+  #final h2 { margin:0 0 10px; color:#5cff91; font-size:clamp(20px, 4vw, 28px); }
+  #final p { margin:7px 0; color:#b2d9bd; }
+  .foot { margin-top:24px; color:#3d704d; font-size:11px; }
+  @keyframes appear { from {opacity:0; transform:translateY(8px)} to {opacity:1; transform:translateY(0)} }
+  @media (prefers-reduced-motion: reduce) { * { animation:none!important; transition:none!important; } }
+</style>
+</head>
+<body>
+<section class="terminal">
+  <div class="bar">
+    <span><i class="dot"></i>UNKNOWN_TERMINAL v3.7</span>
+    <span>SESSION: <span class="ok">ACTIVE</span></span>
+  </div>
+  <main>
+    <h1>ACCESS GRANTED_</h1>
+    <p class="sub">INITIALIZING SECURE CONNECTION...</p>
+    <div id="log" aria-live="polite"></div>
+    <div class="progress-wrap"><div id="progress"></div></div>
+    <div id="percent">0%</div>
+    <div id="final">
+      <h2>Relax. You're not hacked. :)</h2>
+      <p>Вы просто случайно засветили свою группу перед не тем человеком.</p>
+      <p class="ok">&gt; OPERATION: HACKATHON OBSERVER</p>
+      <p class="dim">&gt; SESSION TERMINATED. HAVE A NICE DAY.</p>
+    </div>
+    <div class="foot">AUTHORIZED? NOT REALLY. DANGEROUS? NOT AT ALL.</div>
+  </main>
+</section>
+<script>
+const messages = [
+  "[OK] Establishing connection",
+  "[OK] Analyzing environment",
+  "[OK] Checking security protocols",
+  "[OK] Searching for vulnerabilities",
+  "[OK] Target identified",
+  "[OK] Loading totally harmless payload",
+  "[OK] Preparing final protocol"
+];
+const log = document.getElementById("log");
+const progress = document.getElementById("progress");
+const percent = document.getElementById("percent");
+let i = 0;
+function next() {
+  if (i < messages.length) {
+    const row = document.createElement("div");
+    row.className = "line";
+    row.innerHTML = '<span class="ok">' + messages[i] + '</span>';
+    log.appendChild(row);
+    i++;
+    const value = Math.round((i / messages.length) * 100);
+    progress.style.width = value + "%";
+    percent.textContent = value + "%";
+    setTimeout(next, 650 + Math.random() * 450);
+  } else {
+    setTimeout(() => {
+      document.getElementById("final").style.display = "block";
+      percent.textContent = "100% — COMPLETE";
+    }, 500);
+  }
+}
+setTimeout(next, 500);
+</script>
+</body>
+</html>
